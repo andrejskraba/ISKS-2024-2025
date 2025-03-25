@@ -71,6 +71,35 @@ const char HTML0[] PROGMEM = R"rawliteral(
         </html>
         )rawliteral";     
 
+        const char HTML4[] PROGMEM = R"rawliteral(
+          <!DOCTYPE html>
+          <html lang="sl">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>esp32</title>
+          </head>
+          <body>
+              <h1>Ukaz za izklop LED1 & LED2 diod prejet.</h1>
+          </body>
+          </html>
+          )rawliteral";
+        
+        
+          const char HTML5[] PROGMEM = R"rawliteral(
+            <!DOCTYPE html>
+            <html lang="sl">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>esp32</title>
+            </head>
+            <body>
+                <h1>Ukaz za vklop LED1 & LED2 diod prejet.</h1>
+            </body>
+            </html>
+            )rawliteral";            
+
 
 
 const char HTMLroot[] PROGMEM = R"rawliteral(
@@ -121,6 +150,20 @@ void handle_led2off(){
   server.send(200, "text/html", HTML2); // kot odgovor posredujemo spletno stran, ki je v spremenljivki HTML0
 }
 
+void handle_led12on(){
+  LED1status = HIGH;
+  LED2status = HIGH;
+  Serial.println("GPIO4 Status: ON"); // General Purpose Input Output
+  server.send(200, "text/html", HTML3); // kot odgovor posredujemo spletno stran, ki je v spremenljivki char [] HTML1
+}
+
+void handle_led12off(){
+  LED1status = LOW;
+  LED2status = LOW;
+  Serial.println("GPIO4 Status: OFF");
+  server.send(200, "text/html", HTML2); // kot odgovor posredujemo spletno stran, ki je v spremenljivki HTML0
+}
+
 void handle_NotFound(){ // v primeru, da spletne strani ni bilo moč najti na strežniku
   server.send(404, "text/html; charset=utf-8", "Spletne strani ni bilo moč najti na esp32 spletnem strežniku."); // uporabnika obvestimo, da spletne strani nismo uspeli najti na strežniku
 }
@@ -147,6 +190,8 @@ void setup() {
   server.on("/0", handle_led1off); // če klient v Chrome zapiše /0, se bo sprožila funkcija handle_led1off
   server.on("/3", handle_led2on); // če klient v Chrome zapiše /3, se bo sprožila funkcija handle_led2on
   server.on("/2", handle_led2off); // če klient v Chrome zapiše /2, se bo sprožila funkcija handle_led2off  
+  server.on("/5", handle_led12on); // če klient v Chrome zapiše /5, se bo sprožila funkcija handle_led12on
+  server.on("/4", handle_led12off); // če klient v Chrome zapiše /4, se bo sprožila funkcija handle_led12off  
   server.onNotFound(handle_NotFound); // v primeru, da spletne strani ni bilo moč najti sprožimo funkcijo rokovanja NotFound
   server.begin(); // poženemo spletni strežnik na našem modulu esp32
   Serial.println("HTTP strežnik je zagnan, vpišite IP naslov v brskalnik, npr. http://192.168.1.142/ http in ne https.");
