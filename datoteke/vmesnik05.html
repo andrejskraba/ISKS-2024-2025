@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        html  {font-family: Helvetica; text-align: center;}
+        body  {margin-top: 50px;}
+        h1    {color: #444444; margin: 50px auto 30px;}
+        h3    {color: #444444; margin-bottom: 50px;}
+        .gumb {
+        background-color: #3499db; /* določimo barvo ozadja (svetlo modra) */
+        display: block; /* ustvarimo element blok - cela širina */
+        width: 200px; /* širino nastavimo na 200px, da povezava ni čez celo stran */ 
+        color: white; /* barva besedila je bela */
+        padding: 13px 30px; /* dodamo oblazinjenje (top-bottom 13px, left-rigth 30px) */
+        text-decoration: none; /* umaknemo podčrtanje povezave (uporabno, če povezavo oblikujemo kot gumb) */
+        font-size: 25px; /* velikost besedila je 25px */
+        margin: 0px auto 35px; /* gumb postavimo sredinsko in ddoamo 35px robu na spodnji strani */
+        border-radius: 4px; /* rahlo zaoblimo vogale gumba */
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>esp32</title>
+</head>
+<body>
+    <h1>esp32 spletni strežnik</h1>
+    <h3>Priklop na WiFi usmerjevalnik</h3>
+    <a class="gumb" href="/1">Prižgi LED</a>
+    <a class="gumb" href="/0">Ugasni LED</a>
+</body>
+</html>
