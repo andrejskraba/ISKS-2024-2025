@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket</title>
+</head>
+<body>
+<h2>Primer s spletnim vtičnikom WebSocket</h2>
+<button onclick="prižgi()">Prižgi LED</button>
+<button onclick="ugasni()">Ugasni LED</button>
+
+<script>
+
+let povezava = new WebSocket("ws://192.168.1.170:81/"); // vzpostavitev povezave preko spletnega vtičnika
+
+function prižgi(){
+    povezava.send("1");
+}
+
+function ugasni(){
+    povezava.send("0");
+}
+
+</script>
+
+</body>
+</html>

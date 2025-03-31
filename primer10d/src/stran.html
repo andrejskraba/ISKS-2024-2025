@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket</title>
+</head>
+<body>
+<h2>Primer s spletnim vtičnikom WebSocket</h2>
+<button onclick="pošljiSporočilo()">pošljiSporočilo</button>
+
+<script>
+
+let povezava = new WebSocket("ws://192.168.1.170:81/"); // vzpostavitev povezave preko spletnega vtičnika
+
+function pošljiSporočilo(){
+    povezava.send("abcčdefghi"); // na strežnik (esp32) pošljemo sporočilo
+}
+
+</script>
+
+</body>
+</html>
