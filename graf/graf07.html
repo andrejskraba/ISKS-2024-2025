@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<!-- Univerza v Mariboru | Fakulteta za organizacijske vede -->
+<!-- Laboratorij za kibernetiko in sisteme za podporo odločanju -->
+<!-- Andrej Škraba CC BY-SA -->
+
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graf</title>
+</head>
+<body>
+Primer z grafom 
+<br>
+<canvas id="platno-1" width="800" height="100" style="border: 1px dashed #c3c3c3;"></canvas>
+<br>
+<script>
+"use strict"; // omogočimo delo z razredi  ("class")
+
+// "boilerplate" koda za platno (naslednje štiri vrstice)
+let canvas1; // spremenljivka za platno
+let plat1; // spremenljivka za kontekst ctx -> plat1
+canvas1 = document.getElementById("platno-1"); // v html dokumentu poiščemo platno 1
+plat1 = canvas1.getContext("2d"); // od tu dalje delamo s spremenljivko plat1 za izris na platno
+
+plat1.strokeStyle = "#ff0000"; // določimo rdečo barvo izrisa, hex koda v obliki "rrggbb" RRed GGreen BBlue ff=255
+
+let x = new Array(); // ustvarimo novo polje x oz. tabelo ("array"), lahko bi zapisali tudi x = []; spr. tipa Array
+let y = new Array(); // ustvarimo novo polje x oz. tabelo ("array"), lahko bi zapisali tudi x = []; spr. tipa Array
+let maxGrafX = canvas1.width; // maksimum po abscici
+let maxGrafY = canvas1.height; // maksimum po ordinati
+let časovnik; // za izvedbo setTimeout funkcije
+
+for(let i=0; i<canvas1.width; i++){ // zanka gre od 0 do 800 oz. do širine platna
+    x[i] = i; // za x zapišemo [0, 1, 2, 3, ... do 800], t.j. vrednost i-ja
+}
+
+function zanka(){ // funkcijo zanka večkrat zaporedoma izvedemo
+
+    if(y.length == maxGrafX + 1){ // če je platno veliko 10x10 imamo 11x11 točk, zaradi tega "+1"
+        y.shift(); // na prvem mestu brišemo vrednost
+        y.push(Math.random()*100); // na koncu potisnemo v polje ("array") novo vrednost
+    }
+    else{ // če polje z vrednostmi še ni polno
+        y.push(Math.random()*100); // če "array" še ni poln potisnemo novo vrednost v "array" 
+    }
+
+    plat1.clearRect(0, 0, maxGrafX, maxGrafY); // brišemo platno
+
+    plat1.beginPath(); // za začetek izrisa
+    for(let i=0; i<y.length; i++){
+        plat1.lineTo(x[i], y[i]); // izris črte
+    }
+    plat1.stroke(); // za prikaz črte
+
+    časovnik = setTimeout(zanka, 10); // na 10 ms ponavljamo funkcijo zanka
+}
+
+zanka();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<!-- Univerza v Mariboru | Fakulteta za organizacijske vede -->
+<!-- Laboratorij za kibernetiko in sisteme za podporo odločanju -->
+<!-- Andrej Škraba CC BY-SA -->
+
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graf</title>
+</head>
+<body>
+Primer z grafom 
+<br>
+<canvas id="platno-1" width="800" height="100" style="border: 1px dashed #c3c3c3;"></canvas>
+<br>
+<script>
+"use strict"; // omogočimo delo z razredi  ("class")
+
+// "boilerplate" koda za platno (naslednje štiri vrstice)
+let canvas1; // spremenljivka za platno
+let plat1; // spremenljivka za kontekst ctx -> plat1
+canvas1 = document.getElementById("platno-1"); // v html dokumentu poiščemo platno 1
+plat1 = canvas1.getContext("2d"); // od tu dalje delamo s spremenljivko plat1 za izris na platno
+
+plat1.strokeStyle = "#ff0000"; // določimo rdečo barvo izrisa, hex koda v obliki "rrggbb" RRed GGreen BBlue ff=255
+
+let x = new Array(); // ustvarimo novo polje x oz. tabelo ("array"), lahko bi zapisali tudi x = []; spr. tipa Array
+let y = new Array(); // ustvarimo novo polje x oz. tabelo ("array"), lahko bi zapisali tudi x = []; spr. tipa Array
+
+x[0] = 10;
+y[0] = 70;
+x[1] = 110;
+y[1] = 35;
+x[2] = 210;
+y[2] = 50;
+x[3] = 310;
+y[3] = 25;
+x[4] = 410;
+y[4] = 45;
+x[5] = 510;
+y[5] = 15;
+
+plat1.beginPath(); // za začetek izrisa
+plat1.lineTo(x[0], y[0]); // prva točka na platnu
+plat1.lineTo(x[1], y[1]); // druga točka na platnu
+plat1.lineTo(x[2], y[2]);
+plat1.lineTo(x[3], y[3]);
+plat1.lineTo(x[4], y[4]);
+plat1.lineTo(x[5], y[5]);
+plat1.stroke(); // za prikaz črte
+
+</script>
+
+</body>
+</html>
