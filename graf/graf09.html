@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<!-- Univerza v Mariboru | Fakulteta za organizacijske vede -->
+<!-- Laboratorij za kibernetiko in sisteme za podporo odločanju -->
+<!-- Andrej Škraba CC BY-SA -->
+
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graf</title>
+</head>
+<body>
+Primer z grafom 
+<br>
+<canvas id="platno-1" width="800" height="100" style="border: 1px dashed #c3c3c3;"></canvas>
+<br>
+<script>
+"use strict"; // omogočimo delo z razredi  ("class")
+
+let časovnik; // za izvedbo setTimeout funkcije
+
+let graf1; // spremenljivka oz. prvi objekt razreda Graf
+
+class Graf{ // začetek telesa razreda Graf
+    constructor(idPlatna){
+        // "boilerplate" koda za platno (naslednje štiri vrstice)
+        this.canvas1 = document.getElementById(idPlatna); // v html dokumentu poiščemo platno katerega identifikator posredujemo preko arg. konstruktorske članske funkcije
+        this.plat1 = this.canvas1.getContext("2d"); // od tu dalje delamo s spremenljivko plat1 za izris na platno
+
+        this.plat1.strokeStyle = "#ff0000"; // določimo rdečo barvo izrisa, hex koda v obliki "rrggbb" RRed GGreen BBlue ff=255
+
+        this.x = new Array(); // ustvarimo novo polje x oz. tabelo ("array"), lahko bi zapisali tudi x = []; spr. tipa Array
+        this.y = new Array(); // ustvarimo novo polje x oz. tabelo ("array"), lahko bi zapisali tudi x = []; spr. tipa Array
+        this.maxGrafX = this.canvas1.width; // maksimum po abscici
+        this.maxGrafY = this.canvas1.height; // maksimum po ordinati
+
+        for(let i=0; i<this.canvas1.width; i++){ // zanka gre od 0 do 800 oz. do širine platna
+            this.x[i] = i; // za x zapišemo [0, 1, 2, 3, ... do 800], t.j. vrednost i-ja
+        }
+    }
+    dodajVrednostAliBrišiInDodaj(yVrednost){
+        if(this.y.length == this.maxGrafX + 1){ // če je platno veliko 10x10 imamo 11x11 točk, zaradi tega "+1"
+            this.y.shift(); // na prvem mestu brišemo vrednost
+            this.y.push(yVrednost); // na koncu potisnemo v polje ("array") novo vrednost
+        }
+        else{ // če polje z vrednostmi še ni polno
+            this.y.push(yVrednost); // če "array" še ni poln potisnemo novo vrednost v "array" 
+        }
+    }
+
+    izriši(yVrednost){
+        this.dodajVrednostAliBrišiInDodaj(yVrednost);
+
+        this.plat1.clearRect(0, 0, this.maxGrafX, this.maxGrafY); // brišemo platno
+
+        this.plat1.beginPath(); // za začetek izrisa
+        for(let i=0; i<this.y.length; i++){
+            this.plat1.lineTo(this.x[i], this.y[i]); // izris črte
+        }
+        this.plat1.stroke(); // za prikaz črte
+    }
+
+} // konec telesa razreda Graf
+
+function zanka(){ // funkcijo zanka večkrat zaporedoma izvedemo
+    graf1.izriši(Math.random()*100); // izrišemo vrednost med 0 in 100; Math.random() nam vrne število med 0 in 1
+    časovnik = setTimeout(zanka, 10); // na 10 ms ponavljamo funkcijo zanka
+}
+
+graf1 = new Graf("platno-1"); // ustvarimo (konstruiramo) nov graf1 kot objekt razreda Graf
+
+zanka();
+
+</script>
+
+</body>
+</html>
