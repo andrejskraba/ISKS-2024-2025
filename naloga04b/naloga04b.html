@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Univerza v Mariboru | Fakulteta za organizacijske vede -->
+<!-- Laboratorij za kibernetiko in sisteme za podporo odločanju -->
+<!-- Andrej Škraba CC BY-SA -->
+
+<html>
+<head>
+<title>Primer z grafom</title>
+</head>
+<body>
+
+Primer z grafom
+<br>
+<button id="dodaj-graf" onClick="dodajObjektGraf();">dodajObjektGraf</button>
+<button id="briši-graf" onClick="brišiGraf();">brišiGraf</button>
+<div id="grafi">
+<canvas id="platno0" width="100" height="100" style="border: 1px dashed #099999;"></canvas><span id="span0"> </span>
+<canvas id="platno1" width="100" height="100" style="border: 1px dashed #099999;"></canvas><span id="span1"> </span>
+<canvas id="platno2" width="100" height="100" style="border: 1px dashed #099999;"></canvas><span id="span2"> </span>
+</div>
+
+<script type="text/javascript">
+    "use strict"; // omogočimo delo z razredi ("class")
+
+    let graf1; // spremenljivka, ki predstavlja prvi graf (objekt razreda Graf)
+    let graf2; // spremenljivka, ki predstavlja drugi graf (objekt razreda Graf)
+    let graf3; // spremenljivka, ki predstavlja tretji graf (objekt razreda Graf)
+    let časovnik; // spremenljivka časovnik, za izvedbo simulacije
+
+    let tabelaGrafov = []; // spremenljivka za tabelo grafov
+    
+    class Graf {
+        constructor(idPlatna){
+            // "boilerplate" koda za platno
+            this.can1 = document.getElementById(idPlatna); // v html delu poiščemo platno1; spremenljivka can1 sedaj predstavlja platno1
+            this.plat1 = this.can1.getContext("2d"); // od tu dalje delamo s spremenljivo plat1 (za izris na platnu iz id "platno1")
+            
+            this.plat1.strokeStyle = "#ff0000"; // določimo barvo polnila, hex oblika #RRGGBB
+            this.x = new Array(); // ustvarimo novo tabelo x (polje), lahko bi zapisali tudi let x = []; (spremenljivka tipa Array)
+            this.y = new Array(); // ustvarimo novo tabelo y (polje), lahko bi zapisali tudi let y = []; (spremenljivka tipa Array)
+            this.maxGrafX = this.can1.width; // maksimum po abscisi
+            this.maxGrafY = this.can1.height; // maksimum po ordinati
+            
+            // napolnimo polje x
+            for (let i=0; i < this.maxGrafX; i++) {
+                this.x[i] = i; // za x zapišemo [0, 1, 2, ...], t.j. vrednost i-ja
+            }
+        }  
+
+        dodajVrednostAliBrišiInDodaj(yVrednost){
+            if (this.y.length == this.maxGrafX + 1) { // če je platno veliko 10x10 imamo 11x11 točk, zaradi tega "+1"
+                this.y.splice(0, 1); // v primeru, da je tabela vrednosti polna na mestu 0 v tabeli y brišemo eno vrednost
+                this.y[this.maxGrafX] = yVrednost; // in novo vrednost dodamo na koncu polja
+            }
+            else { // če polje z vrednostmi še ni polno
+                this.y.push(yVrednost); // če tabela y še ni polna potisnemo novo vrednost v polje
+            }
+        }
+
+        izriši(yVrednost) {
+            this.dodajVrednostAliBrišiInDodaj(yVrednost);
+            this.plat1.clearRect(0, 0, this.maxGrafX, this.maxGrafY); // brišemo platno
+
+            this.plat1.beginPath(); // začetek izrisa
+
+            for(let i = 0; i < this.y.length; i++) {
+                this.plat1.lineTo(this.x[i], this.y[i]); // za vrednost y pomnožimo naključno vrednost z višino platna, npr. 0.25 * 100 = 25
+            }
+            this.plat1.stroke(); // za prikaz črte na platnu
+        }
+    }
+
+
+    function zanka() {
+        for(let i = 0; i < tabelaGrafov.length; i++) {
+            tabelaGrafov[i].izriši(Math.random()*100);
+        }
+        časovnik = setTimeout(zanka, 30); // na 10ms ponavljamo funkcijo zanka
+    }
+
+    for (let i = 0; i < 3; i++) { // ustvarimo najprej 3 grafe
+        tabelaGrafov.push(new Graf("platno" + i));
+    }
+
+    zanka();
+
+    function dodajPlatnoVhtml() {
+        let canvas = document.createElement('canvas');
+        canvas.id     = "platno" + tabelaGrafov.length; // vsako platno bo imelo nov id glede na dolžino tabele z grafi
+        canvas.width  = 100;
+        canvas.height = 100;
+        canvas.style.border   = "1px dashed #099999";
+        let divZgrafi = document.getElementById("grafi");
+        divZgrafi.appendChild(canvas);
+        let presledek = document.createElement( "span" );
+        presledek.id     = "span" + tabelaGrafov.length; // vsako platno bo imelo nov id glede na dolžino tabele z grafi
+        presledek.innerHTML = " ";
+        divZgrafi.appendChild(presledek);
+        //divZgrafi.appendChild(document.createTextNode( '\u00A0' )); // dodamo presledek za grafom (" "), da dobimo ustrezen razmik
+        //divZgrafi.appendChild(document.createElement( 'span' )); // dodamo presledek za grafom (" "), da dobimo ustrezen razmik
+    }
+
+    function dodajObjektGraf() {
+        dodajPlatnoVhtml(); // najprej ustvarimo novo platno
+        tabelaGrafov.push(new Graf("platno" + tabelaGrafov.length));
+    }
+
+    function brišiGraf() {
+        tabelaGrafov.pop(); // brišemo zadnji graf v tabeli
+        let el = document.getElementById("platno" + tabelaGrafov.length);
+        if(el) {el.remove();} // brišemo element, če obstaja
+        el = document.getElementById("span" + tabelaGrafov.length);
+        if(el) {el.remove();} // brišemo element, če obstaja
+    }
+
+
+
+   
+</script>
+ 
+</body>
+</html>
